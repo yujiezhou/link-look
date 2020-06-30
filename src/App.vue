@@ -25,6 +25,12 @@
         <div class="text">答错了，再思考一下🤔？</div>
       </div>
     </div>
+    <audio ref="congratulations" controls hidden="true" preload="auto">
+      <source src="@/assets/congratulations.mp3" />
+    </audio>
+    <audio ref="click" controls hidden="true" preload="auto">
+      <source src="@/assets/click.mp3" />
+    </audio>
   </div>
 </template>
 
@@ -43,12 +49,18 @@ export default class App extends Vue {
 
   isEnd = 0; // 1-选对，2-选错
 
+  $refs!: {
+    congratulations: HTMLAudioElement;
+    click: HTMLAudioElement;
+  };
+
   // eslint-disable-next-line space-before-function-paren
   selectHandle(v: any): void {
     const { selectArr, endArr } = this;
     if (endArr.indexOf(v.id) > -1 || !v.target) {
       return;
     }
+    this.$refs.click.play();
     const index = selectArr.indexOf(v.id);
     if (index > -1) {
       this.selectArr.splice(index, 1);
@@ -57,6 +69,8 @@ export default class App extends Vue {
       if (this.selectArr[0] === v.target) {
         this.isEnd = 1;
         this.endArr = this.endArr.concat(this.selectArr);
+        this.$refs.congratulations.currentTime = 0;
+        this.$refs.congratulations.play();
       } else {
         this.isEnd = 2;
       }
@@ -69,6 +83,7 @@ export default class App extends Vue {
   clickHandle() {
     this.selectArr = [];
     this.isEnd = 0;
+    this.$refs.congratulations.pause();
   }
 }
 </script>
