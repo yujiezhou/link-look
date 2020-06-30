@@ -28,6 +28,9 @@
     <audio ref="congratulations" controls hidden="true" preload="auto">
       <source src="@/assets/congratulations.mp3" />
     </audio>
+    <audio ref="disdain" controls hidden="true" preload="auto">
+      <source src="@/assets/disdain.mp3" />
+    </audio>
     <audio ref="click" controls hidden="true" preload="auto">
       <source src="@/assets/click.mp3" />
     </audio>
@@ -51,6 +54,7 @@ export default class App extends Vue {
 
   $refs!: {
     congratulations: HTMLAudioElement;
+    disdain: HTMLAudioElement;
     click: HTMLAudioElement;
   };
 
@@ -69,10 +73,13 @@ export default class App extends Vue {
       if (this.selectArr[0] === v.target) {
         this.isEnd = 1;
         this.endArr = this.endArr.concat(this.selectArr);
+        // 音频
         this.$refs.congratulations.currentTime = 0;
         this.$refs.congratulations.play();
       } else {
         this.isEnd = 2;
+        this.$refs.disdain.currentTime = 0;
+        this.$refs.disdain.play();
       }
     } else {
       this.selectArr.push(v.id);
@@ -83,6 +90,7 @@ export default class App extends Vue {
   clickHandle() {
     this.selectArr = [];
     this.isEnd = 0;
+    this.$refs.disdain.pause();
     this.$refs.congratulations.pause();
   }
 }
